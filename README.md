@@ -36,9 +36,11 @@ Fora do horário de aula ou monitoria:
 
 ## Scripts utilizados em aula
 
-| Exemplo                                                                                     |
-|:--------------------------------------------------------------------------------------------|
-| [01-introducao.R](https://curso-r.github.io/202301-r4ds-1/exemplos_de_aula/01-introducao.R) |
+| Exemplo                                                                                       |
+|:----------------------------------------------------------------------------------------------|
+| [01_introducao.R](https://curso-r.github.io/202301-r4ds-1/exemplos_de_aula/01_introducao.R)   |
+| [02_importacao.R](https://curso-r.github.io/202301-r4ds-1/exemplos_de_aula/02_importacao.R)   |
+| [03_manipulacao.R](https://curso-r.github.io/202301-r4ds-1/exemplos_de_aula/03_manipulacao.R) |
 
 ## Práticas
 
