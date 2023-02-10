@@ -277,3 +277,308 @@ imdb |>
 
 imdb |> head(10) |> View()
 imdb %>% head(10) %>% View()
+
+# Filtrar linhas (filter) -------------------------------------------------
+
+
+imdb <- read_csv("dados/imdb.csv")
+
+imdb_spielberg <- filter(imdb, direcao == "Steven Spielberg")
+
+imdb_spielberg_ordenado <- arrange(imdb_spielberg, desc(orcamento))
+
+# pipes
+imdb_spielberg_ordenado <- imdb |> 
+  filter(direcao == "Steven Spielberg") |> 
+  arrange(desc(orcamento))
+
+imdb_filmes_10_horas <- imdb |> 
+  filter(duracao > 600)
+# as vezes dá 0 linhas e faz sentido
+
+# vamos usar aqui os operadores lógicos:
+# intuitivamente são os sinais que fazem comparações: ==, >, <, <=, >=
+
+# é tudo que no R quando eu uso o resultado é TRUE ou FALSE
+
+imdb |> 
+  filter(ano > 2010, duracao > 180)
+
+# poderíamos fazer várias aplicações de filter:
+
+imdb |> 
+  filter(ano > 2010) |> 
+  filter(duracao < 180)
+
+# Comparações lógicas -----------------------------------------------------
+
+x <- 5
+
+x > 3
+x > 0
+
+x > 7
+
+# comparação de vetor com número é como se fosse várias perguntas:
+imdb_filmes_5_horas$ano > 2010
+
+# é isso ^^^ que acontece quando a gente faz
+
+imdb_filmes_5_horas |> 
+  filter(ano > 2010)
+# ele mantém só as linhas pras quais aquele comando deu TRUE
+
+imdb |> 
+  filter(receita > orcamento) |>
+  View()
+# posso colocar no sinal de comparação duas colunas!
+
+imdb$receita > imdb$orcamento
+# dá um monte de NA, mas funciona
+
+# Operador lógico ---------------------------------------------------------
+
+# E, OU, NÃO e também DENTRE, que vamos adicionar hj no R
+
+imdb |> 
+  filter(pais == "USA" | pais == "BR")
+# o que tem dentro do parêntes pode ser traduzido como 
+# pais é USA OU pais é BR. | é o "OU"
+
+# a vírgula, se vc não usar OU na mesma frase, é o E
+
+# se vc quiser usar OU e E ao mesmo tempo, o E é &
+imdb |> 
+  filter(pais == "USA", ano > 2010)
+
+imdb |> 
+  filter(pais == "USA" & ano > 2010)
+
+# esses comandos são iguais, mas se tivesse "OU" só poderia usar o segundo
+
+imdb |> 
+  filter(
+    (pais == "USA" & ano > 2010) | pais == "BR"
+  ) |> 
+  View()
+# não tem filme brasileiro
+
+imdb |> 
+  filter(
+    !(direcao == "Steven Spielberg")
+  )
+# a exclamação na frente é NÃO filme do spielberg
+
+imdb |> 
+  filter(
+    !(duracao < 120)
+  )
+
+imdb |> 
+  filter(
+    (duracao >= 120)
+  )
+
+meu_vetor <- c(1,2,3)
+
+# Filter e NA -------------------------------------------------------------
+
+arrange(imdb, desc(orcamento))
+
+imdb |> 
+  arrange(desc(orcamento)) |> 
+  View()
+
+imdb |> 
+  filter(orcamento > 0)
+
+imdb |> 
+  filter(orcamento > -10000000000)
+# o número é quase igual nos dois casos. como isso é possível?
+
+imdb |> 
+  filter(orcamento > -Inf)
+
+# o filter exclui os orçamentos com NA!
+
+# o que a gente pode fazer, então?
+
+# incluir nos nossos filtrous ou "OU se é NA"
+
+filmes_sem_orcamento <- imdb |> 
+  filter(is.na(orcamento))
+
+is.na(NA)
+# pra gente entender o is.na é como se fosse fazer
+# x <- 10
+# x == NA
+# isso conceitualmente porque esse comando não funciona por convenção
+# do R
+# o jeito correto de verificar se algo é NA é fazer is.na(x)
+
+is.na(c(1, 2, 3, NA, 5))
+
+imdb |> 
+  filter(orcamento > 1000000 | is.na(orcamento))
+# pra garantir que os NA's fiquem esse é o único jeito
+
+# podemos fazer o nosso próprio drop_na se a gente quiser
+
+imdb_com_orcamento <- imdb |> 
+  filter(!is.na(orcamento))
+
+#igual da
+#imdb_com_orcamento <- imdb |> 
+# drop_na(orcamento)
+
+
+# Mais exemplos de filtro -------------------------------------------------
+
+# DENTRE
+
+imdb |> 
+  filter(direcao == "Steven Spielberg")
+
+imdb |> 
+  filter(!(direcao == "Steven Spielberg"))
+
+# teria algum jeito de eu fazer uma lista de diretos que eu quer manter
+# ou remover?
+
+# é pra isso que serve o DENTRE ou %in%
+
+imdb |> 
+  filter(direcao %in% c("Steven Spielberg", "Martin Scorsese",
+                        "Quentin Tarantino", "Greta Gerwig")) |> 
+  View()
+
+imdb |> 
+  filter(ano %in% c(1931, 1956, 2010))
+
+# o %in% é bem parecido com o === só que ele verifica o pertencimentos
+# dos elementos da coluna a um certo conjunto (que aparece a direita)
+# do %in%
+
+imdb |> 
+  filter(
+    !(generos %in% c("Drama", "Comedy"))
+  ) |> 
+  View()
+
+imdb |> 
+  filter(
+    !(generos %in% c("Drama", "Comedy") | ano > 2010
+  )
+  ) |> 
+  View()
+
+# Filter texto vs. numeros ------------------------------------------------
+
+imdb |> 
+  filter(
+    ano > 2010
+  )
+
+imdb |> 
+  filter(data_lancamento >= "2020-03-01",
+         data_lancamento <= "2020-03-31") |> 
+  View()
+# pra datas e números então o %in% não é necessário
+
+# pra textos ele é útil mas também não resolve todos os problemas
+
+imdb |> 
+  filter(
+    generos == "Comedy"
+  )
+
+imdb |> 
+  filter(
+    generos %in% c("Comedy", "Comedy, Horror", "Comeddy, Horror, Drama")
+  )
+
+# como eu poderia procurar "comedia" em qualquer posição nos generos?
+
+library(stringr)
+
+str_detect(c("banana", "ana clara", "ilana", "fernando"), "ana")
+
+imdb |> 
+  filter(
+    str_detect(generos, "Comedy")
+  ) |> 
+  View()
+# o str_detect verifica se a string de segundo está contida nas células da coluna
+# que a gente passa no lado esquerdo do str_detect
+
+imdb |> 
+  filter(
+    generos == "Comedy"
+  ) |> 
+  View()
+# o == faz uma correspondência literal
+
+# dentro do filter(base_de_dados, ????) ou base_de_dados |> filter(????) eu posso colocar 
+# qualquer comando de R que vire um vetor de TRUE e FALSE um pra cada linha da base
+# na maior parte dos casos vai servir pra mim usar comparações lógicas
+# ==,>=, <=, >, <
+# | (OU), & (E, ou ',' se for mais simples), ! (NÃO), %in% (DENTRE)
+# mas, como tudo que retorna TRUE ou FALSE serve pro filter, o céu é o limite, eu 
+# se der TRUE ou FALSE numa função eu posso escrever no filter:
+# is.na, str_detect são exemplos de funções que retornam TRUE ou FALSE
+
+
+# Misturando filter com outras coisas -------------------------------------
+
+menores_bilheterias_de_filme <- imdb |> 
+  arrange(receita) |> 
+  head(5) |> 
+  filter(receita > 100000, ano > 2000) 
+
+# é a mesma coisa que fazer
+
+head(arrange(imdb, receita), 5)
+# opcao 1
+
+imbd_receita_maior_que_100k <- filter(imdb, receita > 100000)
+imdb_receita_ordenada <- arrange(imbd_receita_maior_que_100k, receita)
+menores_5_receitas <- head(imdb_receita_ordenada, 5)
+
+
+maiores_orcamentos_anos_90 <- imdb |> 
+  filter(ano >= 1990, ano <= 1999) |> 
+  arrange(desc(orcamento)) |> 
+  head(10) |> 
+  select(titulo, orcamento)
+
+maiores_bilheterias_anos_90 <- imdb |> 
+  filter(ano >= 1990, ano <= 1999) |> 
+  arrange(desc(receita)) |> 
+  head(10) |> 
+  select(titulo, receita)
+
+# a ordem é muito importante:
+
+imdb |> 
+  arrange(desc(receita)) |> 
+  head(50) |> 
+  filter(ano < 2000)
+# quais filme dentre as 50 maiores bilheterias da histórias são de antes de 2000
+
+imdb |> 
+  filter(ano < 2000) |> 
+  arrange(desc(receita)) |> 
+  head(50)
+# os 50 filmes de maior bilheteria lançados antes de 2000
+
+imdb |> 
+  select(titulo, receita) |> 
+  filter(ano < 2000)
+# isso dá erro! o select jogou o ano fora
+
+imdb |> 
+  filter(ano < 2000) |> 
+  select(titulo, receita) 
+# agora dá certo, no passo do filter a tabela que está entrando de fato tem a coluna ano
+# e o select consegue selecionar o que ele quis
+  
