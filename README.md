@@ -36,16 +36,19 @@ Fora do horário de aula ou monitoria:
 
 ## Scripts utilizados em aula
 
-| Exemplo                                                                                       |
-|:----------------------------------------------------------------------------------------------|
-| [01_introducao.R](https://curso-r.github.io/202301-r4ds-1/exemplos_de_aula/01_introducao.R)   |
-| [02_importacao.R](https://curso-r.github.io/202301-r4ds-1/exemplos_de_aula/02_importacao.R)   |
-| [03_manipulacao.R](https://curso-r.github.io/202301-r4ds-1/exemplos_de_aula/03_manipulacao.R) |
+| Exemplo                                                                                                                       |
+|:------------------------------------------------------------------------------------------------------------------------------|
+| [01_introducao.R](https://curso-r.github.io/202301-r4ds-1/exemplos_de_aula/01_introducao.R)                                   |
+| [02_importacao.R](https://curso-r.github.io/202301-r4ds-1/exemplos_de_aula/02_importacao.R)                                   |
+| [03_manipulacao.R](https://curso-r.github.io/202301-r4ds-1/exemplos_de_aula/03_manipulacao.R)                                 |
+| [04_valores_especiais_faltantes.R](https://curso-r.github.io/202301-r4ds-1/exemplos_de_aula/04_valores_especiais_faltantes.R) |
 
 ## Práticas
 
-| Exemplo |
-|:--------|
+| Exemplo                                                                                                   |
+|:----------------------------------------------------------------------------------------------------------|
+| [exemplo_real_manipulacao.R](https://curso-r.github.io/202301-r4ds-1/praticas/exemplo_real_manipulacao.R) |
+| [exemplo_script_real.R](https://curso-r.github.io/202301-r4ds-1/praticas/exemplo_script_real.R)           |
 
 ## Lição de casa
 
